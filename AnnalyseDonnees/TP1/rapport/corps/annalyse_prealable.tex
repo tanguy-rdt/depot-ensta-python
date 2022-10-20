@@ -1,0 +1,52 @@
+\section{Statistiques Descriptives univariées sur des données d’Iris}
+\subsection{Analyse préalable}
+\subsubsection*{Comprendre les données (signification des individus et des variables)}
+
+\vspace{.2cm}
+
+\noindent
+\textbf{Question~2~:} Quel est le nombre d’individus statistiques~? 
+\vspace{.2cm}
+
+Le nombre d'individus statistique est de 150, il peut être obtenu grâce au code \textit{Python} suivant~:
+\begin{lstlisting}[style=myPython, caption=Code Python pour obtenir le nombre d'individus statistiques, frame=lines]
+print("Nombre d'individus statistiques: ", len(df.values))
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Nombre d'individus statistiques:  150
+\end{lstlisting}
+
+\vspace{.5cm}
+
+\noindent
+\textbf{Question~3~:} Trouver les variables qualitatives et leurs modalités associées. Sont-elles nominales ou ordinales~? 
+\vspace{.2cm}
+
+La variable qualitative est la \textit{class}. Il y a en tout trois modalités, qui sont \textit{Iris-setosa, Iris-versicolor} et \textit{Iris-virginica}. 
+Les modalités sont nominales, une espèce n'est pas plus importante qu'une autre, il n'y a donc pas d'ordre.
+\begin{lstlisting}[style=myPython, caption=Code Python pour obtenir les modalités, frame=lines]
+print(speciesname)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+['Iris-setosa' 'Iris-versicolor' 'Iris-virginica']
+\end{lstlisting}
+
+\vspace{.5cm}
+
+\noindent
+\textbf{Question~4~:} Trouver les variables quantitatives. Sont-elles continues ou discrètes~? 
+\vspace{.2cm}
+
+Les variables qualitatives sont discrètes, elles correspondent aux différentes mesures de l'iris~: \textit{sepallength, sepalwidth, petallength} et \textit{petalwidth}.
+
+\begin{lstlisting}[style=myPython, caption=Code Python pour obtenir les variables qualitatives, frame=lines]
+print(variablename)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+['sepallength' 'sepalwidth' 'petallength' 'petalwidth']
+\end{lstlisting}
+
+\vspace{.3cm}

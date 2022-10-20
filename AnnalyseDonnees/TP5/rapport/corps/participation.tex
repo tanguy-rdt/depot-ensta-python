@@ -1,0 +1,192 @@
+\vspace{1cm}
+\section{Participation volontaire ou non ?}
+\vspace{.2cm}
+
+\noindent
+Le tableau suivant résume les résultats d’une enquête menée à la Faculté d’Ingénierie de l’Université
+de Porto, auprès de 129 étudiants de première année. L’objectif de l’enquête était d’évaluer l’attitude
+des étudiants de première année envers les "rites d’initiation des étudiants de première année". Une des
+questions était : "J’ai participé à l’initiation de mon plein gré". \\
+Les réponses ont été notées comme suit :
+
+\begin{enumerate}
+    \item Totalement en désaccord
+    \item En désaccord
+    \item Sans commentaire
+    \item D’accord
+    \item Totalement
+    d’accord
+\end{enumerate}
+
+\noindent
+Le tableau d’effectifs pour les variables SEXE et réponses est présenté dans le tableau ci-dessous.
+
+\begin{center}
+    \begin{tabular}{| c | c | c | c | c | c | c |}
+        \hline
+        \multicolumn{2}{| c |}{\textbf{REPONSE}} & 1 & 2 & 3 & 4 & 5 \\ \hline
+        \multirow{2}{*}{\textbf{GENRE}} & Homme  & 3 & 9 & 18 & 36 & 29 \\ \cline{2-7}
+                                        & Femme  & 3 & 3 & 1 & 14 & 13 \\ \hline
+    \end{tabular}
+\end{center}
+\vspace{.5cm}
+
+
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~4~:} Peut-on conclure que les étudiants masculins et féminins ont un comportement différent
+    lors de l’"initiation" ? Quel test allez vous effectuer pour le prouver ?
+\end{itemize}
+\vspace{.2cm}
+
+\noindent
+Nous pouvons dans un premier temps établir le tableau avec les paramètres $n_{i}$ et $n_{j}$~:
+\vspace{.1cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python pour $n_{i}$ et $n_{j}$, frame=lines]
+nij = np.array([[3, 9, 18, 36, 29],
+[3, 3, 1, 14, 13]])
+
+sum_ni = np.array([np.sum(nij[0, :]), np.sum(nij[1, :])])
+sum_nj = np.array([np.sum(nij[:, 0]), np.sum(nij[:, 1]),
+    np.sum(nij[:, 2]), np.sum(nij[:, 3]), np.sum(nij[:, 4])])
+sum_nij = int(np.array([np.sum(sum_ni[:])]))
+
+print("Nous avons les données suivantes :")
+print(" nij:\n", nij)
+print(" sum_ni:", sum_ni)
+print(" sum_nj:", sum_nj)
+print(" sum nij:", sum_nij, end="\n\n")
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Nous avons les données suivantes :
+    nij:
+    [[ 3  9 18 36 29]
+    [ 3  3  1 14 13]]
+    sum_ni: [95 34]
+    sum_nj: [ 6 12 19 50 42]
+    sum nij: 129
+\end{lstlisting}
+
+\begin{center}
+    \begin{tabular}{| c | c | c | c | c | c | c | c |}
+        \hline
+        \multicolumn{2}{| c |}{\textbf{REPONSE}} & 1 & 2 & 3 & 4 & 5 & \textbf{$n_{i}$}\\ \hline
+        \multirow{2}{*}{\textbf{GENRE}} & Homme  & 3 & 9 & 18 & 36 & 29 & 95\\ \cline{2-8}
+                                        & Femme  & 3 & 3 & 1 & 14 & 13 & 34\\ \hline
+        \multicolumn{2}{| c |}{\textbf{$n_{j}$}} & 6 & 12 & 19 & 50 & 42 & 129\\ \hline
+    \end{tabular}
+\end{center}
+\vspace{.5cm}
+
+
+\begin{enumerate}
+    \item \textbf{Grandeur d'intérêt~:} Le comportement masculin et féminin est indépendant/dépendant
+    \vspace{.1cm}
+   \item \textbf{Hypothèse nulle, $H0$~:} Le comportement masculin et féminin est dépendant
+    \vspace{.1cm}
+   \item \textbf{Hypothèse alternative, $H1$~:} Le comportement masculin et féminin est indépendant
+    \vspace{.1cm}
+   \item \textbf{Niveau de confiance~:} $95\%$
+    \vspace{.1cm}
+   \item \textbf{Test statistique~:} $\chi^{2}_{0} = \sum^{p}_{i=1} \sum^{q}_{j=1} \frac{(n_{ij} - \frac{n_{i}.n_{j}}{n})^{2}}{\frac{n_{i}.n_{j}}{n}}$ estimée par $\chi^{2}_{Obs}$ à partir de l'échantillon
+    \vspace{.1cm}
+   \item \textbf{Rejet de $H0$ si~:}
+        \begin{itemize}
+            \item Région critique: $\chi^{2}_{Obs} > \chi^{2}_{(p-1)(q-1), \alpha}$
+            \item p-valeur: $p-valeur < 0.05$
+        \end{itemize}
+
+    \clearpage
+    \item \textbf{Calculs~:}
+    \begin{itemize}
+        \item Formules utilisées:
+            \begin{figure}[!h]
+                \centering
+                \begin{minipage}{.48\linewidth}
+                    \begin{equation}
+                        \chi^{2}_{Obs} = \sum^{p}_{i=1} \sum^{q}_{j=1} \frac{(n_{ij} - \frac{n_{i}.n_{j}}{n})^{2}}{\frac{n_{i}.n_{j}}{n}}
+                    \end{equation}
+                \end{minipage}\hfill\vline
+                \begin{minipage}{.48\linewidth}
+                    \begin{equation}
+                        \chi^{2}_{(p-1)(q-1), \alpha} = F^{-1}_{\chi^{2}_{(p-1)(q-1)}}(\alpha)
+                    \end{equation}
+                \end{minipage}
+            \end{figure}
+
+            \begin{equation}
+                \textit{p-valeur} = 1 - F_{\chi^{2}_{(p-1)(q-1)}}(\chi^{2}_{Obs})
+            \end{equation}
+        
+        \item Paramètres à prendre en compte~: \\
+            \hspace*{1cm}$p \to$ Le nombre d'intervalles~: 2 (Homme, Femme) \\
+            \hspace*{1cm}$k \to$ Le nombre de valeurs~: 5 par intervalles
+
+        
+    \end{itemize}
+        \vspace{.2cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 4, frame=lines]
+p = 2  
+q = 5  
+ic = 95
+alpha = 1 - ic / 100
+chi2 = stats.chi2.ppf(1-alpha, ((p-1)*(q-1)))
+chi2_Obs = 0
+
+for i in range(p):
+    for j in range(q):
+        chi2_Obs += ((nij[i][j] - ((sum_ni[i]*sum_nj[j])/(sum_nij)))**2)/((sum_ni[i]*sum_nj[j])/(sum_nij))
+
+p_valeur = 1 - stats.chi2.cdf(chi2_Obs, ((p-1)*(q-1)))
+
+print("Question 4:")
+print(" Chi2:", chi2)
+print(" Chi2 Obs:", chi2_Obs)
+print(" p-valeur:", p_valeur)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Question 4:
+    Chi2: 9.487729036781154
+    Chi2 Obs: 6.621370399683419
+    p-valeur: 0.1573019095765884
+\end{lstlisting}
+
+
+    \item \textbf{Décision~:}
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{center}
+                    \begin{tabular}{| c | c |}
+                        \hline
+                        \multicolumn{2}{| c |}{\textbf{Critéres de rejet de H0}} \\
+                        pour $\alpha$ fixé & avec \textit{p-valeur} \\ \hline
+                        $\chi^{2}_{Obs} > \chi^{2}_{(p-1)(q-1), \alpha}$ & $ \textit{p-valeur} < 0.05 $\\ \hline
+                    \end{tabular}
+                \end{center}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation*}
+                    \left .
+                    \begin{aligned}
+                        \chi^{2}_{Obs} = 6.621 \\
+                        \chi^{2}_{(p-1)(q-1), \alpha} = 9.487\\
+                        \textit{p-valeur} = 0.15
+                    \end{aligned} \qquad
+                    \right\} \qquad
+                    \begin{aligned} 
+                        \chi^{2}_{Obs} < \chi^{2}_{(p-1)(q-1), \alpha}\\
+                        \textit{p-valeur} > 0.05
+                    \end{aligned}
+                \end{equation*}
+            \end{minipage}
+        \end{figure}
+
+        Les résultats du test statistique montrent que \textit{H0} ne peut être rejeté puisqu'aucune des conditions n'est validée. \\
+        Le comportement masculin et féminin est dépendant.
+\end{enumerate}
+

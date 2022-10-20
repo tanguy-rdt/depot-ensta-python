@@ -1,0 +1,123 @@
+\section{Fitness}
+\vspace{.2cm}
+
+\noindent
+Regardless of age, about $20\%$ of American adults participate in fitness activities at least twice a week.
+However, these fitness activities change as the people get older, and occasionally participants become
+nonparticipants as they age. In a local survey of n = 100 adults over 40 years old, a total of 15 people
+indicated that they participated in a fitness activity at least twice a week.
+
+\vspace{.2cm}
+
+
+
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~1~:} Do these data indicate that the participation rate for adults over 40 years of age is
+    significantly less than the $20\%$ figure? Calculate the p-value and use it to draw the appropriate
+    conclusions.
+\end{itemize}
+\vspace{.2cm}
+
+\begin{enumerate}
+    \item \textbf{Grandeur d'intérêt~:} Proportion de personne de plus de 40~ans participent à du fitness.
+    \vspace{.1cm}
+   \item \textbf{Hypothèse nulle, H0~:} $p = p0 = 20\%$, soit la proportion de personnes de plus de 40~ans qui participent à du fitness est de $20\%$.
+    \vspace{.1cm}
+   \item \textbf{Hypothèse alternative, H1~:} $p < p0$, soit la proportion de personnes de plus de 40~ans qui participent à du fitness est inférieur à $20\%$.
+    \vspace{.1cm}
+   \item \textbf{Niveau de confiance~:} $95\%$
+    \vspace{.1cm}
+   \item \textbf{Test statistique~:}
+        Test statistique unilatérale pour une proportion d'un grand échantillon~: 
+
+        \begin{equation*}
+            n=100 \text{ et } p_{0}=0.2 \qquad
+            \left\{ \qquad
+            \begin{aligned}
+                n(1-p_{0}) = 80 < 5 \\
+                n.p_{0}=20 < 5
+            \end{aligned}
+            \right .
+        \end{equation*}
+
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{equation}
+                    z_{0} = \frac{\hat{p} - p_{0}}{\sqrt{\frac{p_{0}*(1-p_{0})}{n}}}
+                    \label{eq:test_norm_var_inconnue}
+                \end{equation}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation}
+                    z_{\alpha} = erf^{-1}(1 - \alpha) 
+                    \label{eq:p-valeur_test_norm_var_inconnue}
+                \end{equation}
+            \end{minipage}
+        \end{figure}
+
+        \begin{equation}
+            \textit{p-valeur} = erf(t_{0}) 
+            \label{eq:p-valeur_test_norm_var_inconnue}
+        \end{equation}
+
+        \vspace{.2cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 1, frame=lines]
+n = 100
+p0 = .2
+p = 15/n
+ic = 95
+alpha = 1 - ic / 100
+z = stats.norm.ppf(1 - alpha)
+z0 = (p - p0)/np.sqrt(p0*(1-p0)/n)
+p_valeur = stats.norm.cdf(z0)
+
+print("Question 1:")
+print(" z:", round(z, 3))
+print(" z0:", round(z0, 3))
+print(" p-valeur:", p_valeur, end="\n\n")
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Question 1:
+ z: 1.645
+ z0: -1.25
+ p-valeur: 0.10564977366685518
+\end{lstlisting}
+
+
+    \item \textbf{Rejet de H0 ?}
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{center}
+                    \begin{tabular}{| c | c |}
+                        \hline
+                        \multicolumn{2}{| c |}{\textbf{Critéres de rejet de H0}} \\
+                        pour $\alpha$ fixé & avec \textit{p-valeur} \\ \hline
+                        $z_{0} < -z_{\alpha}$ & $ \textit{p-valeur} < 0.05 $\\ \hline
+                    \end{tabular}
+                \end{center}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation*}
+                    \left .
+                    \begin{aligned}
+                        z_{0} = -1,25 \\
+                        -z_{\alpha} = -1,645\\
+                        \textit{p-valeur} = 0,1
+                    \end{aligned} \qquad
+                    \right\} \qquad
+                    \begin{aligned} 
+                        z_{0} > -z_{\alpha}\\
+                        \textit{p-valeur} > 0.05
+                    \end{aligned}
+                \end{equation*}
+            \end{minipage}
+        \end{figure}
+
+        Les résultats du test statistique montrent que \textit{H0} ne peut être rejeté puisqu'aucune des conditions n'est validée. \\
+        On ne peut pas dire que le taux de personnes âgé de plus de 40~ans qui font du fitness est inférieur à $20\%$.
+\end{enumerate}

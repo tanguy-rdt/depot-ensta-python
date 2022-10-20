@@ -1,0 +1,112 @@
+\vspace{1cm}
+\section{Potency of an Antibiotic}
+\vspace{.2cm}
+
+\noindent
+A drug manufacturer claimed that the mean potency of one of its antibiotics was $80\%$. A random sample
+of $n=100$ capsules were tested and produced a sample mean of  $\overline{Xn}=79.7\%$ with a standard deviation
+of $S_{n-1}$ = $.8\%$.
+
+\vspace{.2cm}
+
+
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~3~:} Do the data present sufficient evidence to refute the manufacturer’s claim? Let $\alpha$ = 0.05.
+\end{itemize}
+\vspace{.2cm}
+
+\begin{enumerate}
+    \item \textbf{Grandeur d'intérêt~:} La puissance moyenne des antibiotiques.
+    \vspace{.1cm}
+    \item \textbf{Hypothèse nulle, H0~:} $\mu = \mu_{0} = 80\%$, soit la puissance moyenne des antibiotiques est de $80\%$.
+    \vspace{.1cm}
+    \item \textbf{Hypothèse alternative, H1~:} $\mu \neq \mu_{0} = 80\%$, soit la puissance moyenne des antibiotiques est différente de $80\%$.
+    \vspace{.1cm}
+    \item \textbf{Niveau de confiance~:} $95\%$
+    \vspace{.1cm}
+   \item \textbf{Test statistique~:}
+        Test statistique bilatéral pour la moyenne d'un grand échantillon de variance connue~:
+        \clearpage
+
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{equation}
+                    z_{0} = \frac{\overline{x_{n}} - \mu_{0}}{\frac{\sigma}{\sqrt{n}}}
+                    \label{eq:test_norm_var_inconnue}
+                \end{equation}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation}
+                    z_{\alpha/2} = erf^{-1}(1 - \frac{\alpha}{2})
+                    \label{eq:p-valeur_test_norm_var_inconnue}
+                \end{equation}
+            \end{minipage}
+        \end{figure}
+
+        \begin{equation}
+            \textit{p-valeur} = 2 - 2 erf(\mid z_{0} \mid) 
+            \label{eq:p-valeur_test_norm_var_inconnue}
+        \end{equation}
+
+        \vspace{.2cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 3, frame=lines]
+n = 100
+u0 = 80/100
+xn = 79.7/100
+ecart_type_x = .8/100
+ic = 95
+alpha = 1 - ic / 100
+z = stats.norm.ppf(1 - (alpha / 2))
+z0 = (xn - u0)/(ecart_type_x/np.sqrt(n))
+p_valeur = 2 - 2 * stats.norm.cdf(np.abs(z0))
+
+print("Question 3:")
+print(" z:", round(z, 3))
+print(" z0:", round(z0, 3))
+print(" p-valeur:", p_valeur)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Question 3:
+ z: 1.96
+ z0: -3.75
+ p-valeur: 0.00017683457040162942
+\end{lstlisting}
+
+
+    \item \textbf{Rejet de H0 ?}
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{center}
+                    \begin{tabular}{| c | c |}
+                        \hline
+                        \multicolumn{2}{| c |}{\textbf{Critéres de rejet de H0}} \\
+                        pour $\alpha$ fixé & avec \textit{p-valeur} \\ \hline
+                        $z_{0} > z_{\alpha/2}$ ou $z_{0} < - z_{\alpha/2}$ & $ \textit{p-valeur} < 0.05 $\\ \hline
+                    \end{tabular}
+                \end{center}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation*}
+                    \left .
+                    \begin{aligned}
+                        z_{0} = 1.96 \\
+                        z_{\alpha/2} = -3.75\\
+                        \textit{p-valeur} = 0.0001
+                    \end{aligned} \qquad
+                    \right\} \qquad
+                    \begin{aligned} 
+                        z_{0} > z_{\alpha/2}\\
+                        \textit{p-valeur} < 0.01
+                    \end{aligned}
+                \end{equation*}
+            \end{minipage}
+        \end{figure}
+
+        Les résultats du test statistique sont hautement significatifs, \textit{H0} peut être rejeté puisque les deux conditions sont validées avec une $\textit{p-valeur} < 0.01$. \\
+        On peut dire avec un niveau de confiance de $95\%$ que la puissance moyenne des antibiotiques est différente de $80\%$.
+\end{enumerate}

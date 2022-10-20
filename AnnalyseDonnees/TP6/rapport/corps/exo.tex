@@ -1,0 +1,276 @@
+\section{Bien doser l’alliage}
+\vspace{.2cm}
+
+\noindent
+On teste la résistance à la traction de sept éprouvettes pour quatre aciers différents. \\
+
+\begin{center}
+    \begin{tabular}{| c | c | c | c | c | c | c | c |}
+        \hline
+        \multirow{2}{*}{\textbf{Proportion de carbone}} & \multicolumn{7}{ c |}{\textbf{Résistance à la traction}}\\ \cline{2-8}
+                                                        & n°1 & n°2 & n°3 & n°4 & n°5 & n°6 & n°7 \\ \hline
+        $0.1\%$ & 23.05 & 36 & 31.1 & 32.65 & 30.9 & 31.4 & 30.85 \\ \hline
+        $0.2\%$ & 41.85 & 25.65 & 46.7 & 34.5 & 36.65 & 31.45 & 36.13 \\ \hline
+        $0.4\%$ & 47.05 & 43.45 & 43 & 38.65 & 41.85 & 35.45 & 41.57 \\ \hline
+        $0.6\%$ & 49.65 & 73.9 & 66.45 & 74.55 & 62.4 & 63.75 & 65.11 \\ \hline
+    \end{tabular}
+\end{center}
+\vspace{.2cm}
+
+
+\noindent
+Dans un premier temps, on peut préparer le programme avec les valeurs que nous avons~:
+
+\begin{lstlisting}[style=myPython, caption=Exploitation de l'énnoncé, frame=lines]
+p = 4
+n = 7
+
+resistance_01 = [23.05, 36, 31.1, 32.65, 30.9, 31.4, 30.85]
+resistance_02 = [41.85, 25.65, 46.7, 34.5, 36.65, 31.45, 36.13]
+resistance_04 = [47.05, 43.45, 43, 38.65, 41.85, 35.45, 41.57]
+resistance_06 = [49.65, 73.9, 66.45, 74.55, 62.4, 63.75, 65.11]
+p_carbonne    = [0.1, 0.2, 0.4, 0.6]
+
+resistance = [resistance_01, resistance_02, resistance_04, resistance_06]
+\end{lstlisting}
+
+\vspace{.5cm}
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~1~:} Identifier la nature des deux variables aléatoires de ce problème.
+\end{itemize}
+\vspace{.2cm}
+
+\begin{itemize}
+    \item Variables qualitatives ordinales $\to$ les différentes proportions de carbone
+    \item Variables quantitatives discrètes $\to$ les différentes résistances
+\end{itemize}
+
+
+\vspace{.5cm}
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~2~:} Calculr les moyennes et les variances de chaque sous-population définie par la proportion
+    de carbone. Représenter les boites à moustaches sur une même figure. Commenter qualitativement
+    la figure résultante quant à l’influence de la proportion de carbone sur la résistance à la traction.
+\end{itemize}
+\vspace{.2cm}
+
+\clearpage
+
+\begin{itemize}
+    \item \textbf{Calcul de la moyenne:}  $\overline{y}_{i\bullet}=\frac{1}{n_{i}} \sum^{n_{i}}_{j=1} y_{ij}$ \\
+    \begin{lstlisting}[style=myPython, caption=Calcul de la moyenne, frame=lines]
+resistance_classe_mean = []
+for i in range(p):
+    sum = 0
+    for j in range(n):
+        sum += resistance[i][j]
+    resistance_classe_mean.append(sum/n)
+\end{lstlisting}
+
+    \item \textbf{Calcul de la variance:}  $S_{i}^{2}=\frac{1}{n_{i}-1} \sum^{n_{i}}_{j=1} (y_{ij}-\overline{y}_{i\bullet})$ \\
+    \begin{lstlisting}[style=myPython, caption=Calcul de la variance, frame=lines]
+resistance_classe_var = []
+for i in range(p):
+    sum = 0
+    for j in range(n):
+        sum += (resistance[i][j] - resistance_classe_mean[i])**2
+    resistance_classe_var.append(sum/(n-1))
+\end{lstlisting}
+
+    \item \textbf{Résultat:} \\
+    
+    \begin{lstlisting}[style=myPython, caption=Affichage du résultat, frame=lines]
+print("Question 2:")
+for i in range(p):
+    print("\t--> ", p_carbonne[i], "% de carbonne: moy =", resistance_classe_mean[i], " et var =", resistance_classe_var[i])
+\end{lstlisting}
+
+    \begin{lstlisting}[style=myLog, caption=Résultat, frame=lines]
+Question 2:
+    -->  0.1 % de carbonne: moy = 30.850  et var = 15.161
+    -->  0.2 % de carbonne: moy = 36.132  et var = 46.517
+    -->  0.4 % de carbonne: moy = 41.574  et var = 13.611
+    -->  0.6 % de carbonne: moy = 65.115  et var = 69.396
+\end{lstlisting}
+    
+
+    \item \textbf{Boite à moustaches:} \\
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                Grâce à la boite à moustache (figure~\ref{fig:figure1}) et aux valeurs précédentes, on constate facilement que la proportion de carbone à une influence sur la résistance à la traction. \\
+                Si l’on prend les deux extrémités, soit une proportion de carbone de $0.1\%$ et $0.6\%$ nous obtenons les valeurs suivantes~: \\
+                \begin{center}
+                    \begin{tabular}{| c | c | c | c |}
+                        \hline
+                        \textbf{Proportion} & \textbf{min} & \textbf{max} & \textbf{moy} \\ \hline
+                        $0.1\%$ & 23.05 & 36 & 30.850 \\ \hline
+                        $0.6\%$ & 49.65 & 74.55 & 65.115 \\ \hline
+                    \end{tabular}
+                \end{center}
+                \vspace{.2cm}
+
+                Ce qui nous permet de dire que la proportion de carbone à bien une influence sur la résistance à la traction, la proportion de $0.6\%$ à une valeur max, min, quartile 1/2/3 plus important 
+                que la proportion de $0.1\%$.
+
+            \end{minipage}\hfill
+            \begin{minipage}{.48\linewidth}
+                \begin{center}
+                    \includegraphics[width=.9\textwidth]{img/figure1.png}
+                    \caption{\label{fig:figure1}Boite à moustache de la résistance à la traction de sept éprouvettes pour différent acier}
+                \end{center}
+            \end{minipage}
+        \end{figure}
+\end{itemize}
+
+
+\vspace{.5cm}
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~3~:} Mener ce test en adoptant la procédure générale des tests. Répondre à la question: la
+    proportion de carbone a-t-elle une influence sur la résistance à la traction ? On utilisera \textit{scipy.stats.f.ppf} et \textit{scipy.stats.f.cdf}
+\end{itemize}
+\vspace{.2cm}
+
+
+\begin{itemize}
+    \item \textbf{Calcul de la moyenne globale:}  $\overline{y}_{\bullet\bullet}=\frac{1}{N} \sum^{p}_{i=1} \sum^{n}_{j=1} y_{ij}$ \\
+    \begin{lstlisting}[style=myPython, caption=Calcul de la moyenne globale, frame=lines]
+N = p * n
+resistance_global_mean = 0
+for i in range(p):
+    for j in range(n):
+        resistance_global_mean += resistance[i][j]
+resistance_global_mean /= N
+\end{lstlisting}
+    
+    \item \textbf{Calcul de la dispersion intraclasse totale:}  $S_{W}^{2}=\frac{1}{N} \sum^{p}_{i=1} n_{i}S_{i}^{2}$ \\
+    \begin{lstlisting}[style=myPython, caption=Calcul de la dispersion intraclasse totale, frame=lines]
+disp_intraclasse_tot = 0
+for i in range(p):
+    disp_intraclasse_tot += (n*resistance_classe_var[i])
+disp_intraclasse_tot /= N
+\end{lstlisting}
+    
+    \item \textbf{Calcul de la dispersion interclasse:}  $S_{B}^{2}=\frac{1}{N} \sum^{p}_{i=1} n_{i}(\overline{y}_{i\bullet}-\overline{y}_{\bullet\bullet})^{2}$ \\
+    \begin{lstlisting}[style=myPython, caption=Calcul de la dispersion interclasse, frame=lines]
+disp_interclasse = 0
+for i in range(p):
+    disp_interclasse += n*(resistance_classe_mean[i]-resistance_global_mean)**2
+disp_interclasse /= N
+\end{lstlisting}
+
+    \item \textbf{Résultat:} \\
+    \begin{lstlisting}[style=myPython, caption=Affichage du résultat, frame=lines]
+print("Question 3 - CALCUL:")
+print("\t--> Moyenne global=", resistance_global_mean)
+print("\t--> Dispersion intraclasse totale=", disp_intraclasse_tot)
+print("\t--> Dispersion interclasse=", disp_interclasse, end="\n\n")
+\end{lstlisting}
+
+    \begin{lstlisting}[style=myLog, caption=Résultat, frame=lines]
+Question 3 - CALCUL:
+    --> Moyenne global= 43.418214285714285
+    --> Dispersion intraclasse totale= 36.171686904761906
+    --> Dispersion interclasse= 171.30450446428577
+\end{lstlisting}
+
+\end{itemize}
+
+\begin{enumerate}
+    \item \textbf{Grandeur d'intérêt~:} Proportion de carbone.
+    \vspace{.1cm}
+   \item \textbf{Hypothèse nulle, $H0$~:} La proportion de carbone n'a pas d'influence sur la résistance à la traction.
+    \vspace{.1cm}
+   \item \textbf{Hypothèse alternative, $H1$~:} La proportion de carbone a une influence sur la résistance à la traction.
+    \vspace{.1cm}
+   \item \textbf{Niveau de confiance~:} $95\%$
+    \vspace{.1cm}
+   \item \textbf{Test statistique~:} $F_{0} = \frac{S^{2}_{B}/(p-1)}{S^{2}_{W}/(N-p)}$ estimée par $f_{0}$ à partir de l'échantillon.
+    \vspace{.1cm}
+   \item \textbf{Rejet de $H0$ si~:}
+        \begin{itemize}
+            \item Région critique: $f_{0} > f_{\alpha, (p-1), (N-p)}$
+            \item p-valeur: $p-valeur < 0.05$
+        \end{itemize}
+
+    \item \textbf{Calculs~:}
+    \begin{itemize}
+        \item Formules utilisées:
+            \begin{figure}[!h]
+                \centering
+                \begin{minipage}{.48\linewidth}
+                    \begin{equation}
+                        f_{0} = \frac{S^{2}_{B}/(p-1)}{S^{2}_{W}/(N-p)}
+                    \end{equation}
+                \end{minipage}\hfill\vline
+                \begin{minipage}{.48\linewidth}
+                    \begin{equation}
+                        f_{\alpha, (p-1), (N-p)} = F^{-1}_{F_{0}}(1 - \alpha)
+                    \end{equation}
+                \end{minipage}
+            \end{figure}
+
+            \begin{equation}
+                \textit{p-valeur} = 1 - F_{f_{\alpha, (p-1), (N-p)}}(f_{0})
+            \end{equation}    
+    \end{itemize}
+        \vspace{.2cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 3, frame=lines]
+ic = 95
+alpha = 1 - (ic/100)
+f = stats.f.ppf(1-alpha, (p-1), (N-p))
+f0 = ((disp_interclasse)/(p-1))/((disp_intraclasse_tot)/(N-p))
+p_valeur = 1 - stats.f.cdf(f0, (p-1), (N-p))
+
+print("Question 3 - TEST:")
+print("\t--> f=", f)
+print("\t--> f0=", f0)
+print("\t--> p-valeur=", p_valeur)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Question 3 - TEST:
+    --> f= 3.0087865704473615
+    --> f0= 37.88698158652568
+    --> p-valeur= 2.910348628759607e-09
+\end{lstlisting}
+
+
+    \item \textbf{Décision~:}
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.40\linewidth}
+                \begin{center}
+                    \begin{tabular}{| c | c |}
+                        \hline
+                        \multicolumn{2}{| c |}{\textbf{Critéres de rejet de H0}} \\
+                        pour $\alpha$ fixé & avec \textit{p-valeur} \\ \hline
+                        $f_{0} > f_{\alpha, (p-1), (N-p)}$ & $ \textit{p-valeur} < 0.05 $\\ \hline
+                    \end{tabular}
+                \end{center}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.56\linewidth}
+                \begin{equation*}
+                    \left .
+                    \begin{aligned}
+                        f_{0} = 37,886 \\
+                        f_{\alpha, (p-1), (N-p)} = 3,008\\
+                        \textit{p-valeur} = 2,910.10^{-09}
+                    \end{aligned} \qquad
+                    \right\} \qquad
+                    \begin{aligned} 
+                        f_{0} > f_{\alpha, (p-1), (N-p)}\\
+                        \textit{p-valeur} < 0.01
+                    \end{aligned}
+                \end{equation*}
+            \end{minipage}
+        \end{figure}
+
+        Les résultats du test statistique sont hautement significatifs, ils montrent que \textit{H0} peut être rejeté puisque toutes les conditions sont validées. \\
+        La VA ne suit pas une loi de Fisher, soit la proportion de carbone a une influence sur la résistance à la traction.
+\end{enumerate}
+

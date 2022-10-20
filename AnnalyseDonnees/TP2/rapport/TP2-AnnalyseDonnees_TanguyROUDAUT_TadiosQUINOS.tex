@@ -1,0 +1,125 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage[final]{pdfpages}
+\usepackage{tikz,pgfplots,pgf}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage[toc,page]{appendix}
+\usepackage{tcolorbox, listings} 
+\usepackage{sectsty}
+\usepackage[french]{minitoc} 
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{mwe}
+\usepackage{amsmath}
+\usepackage{lipsum}
+
+\definecolor{Pantone2377C}{HTML}{2C5574}
+\definecolor{subtitlecolour}{HTML}{00A2A9}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{HTML}{3E8BC0}
+\definecolor{codeorange}{HTML}{ffa334}
+\definecolor{backcolour}{HTML}{efefef}
+
+\lstdefinestyle{myPython}{
+    language=Python,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    otherkeywords={plt, np, df},
+    keywordstyle=\color{codeblue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codeorange},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,       
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    inputencoding=utf8
+}
+
+\lstdefinestyle{myLog}{
+    language={[latex]TeX},
+    backgroundcolor=\color{backcolour},   
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,       
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    inputencoding=utf8
+}
+
+\lstset{
+  backgroundcolor=\color{backgroundColour},   
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{codeblue},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codeorange},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2,
+  literate=
+  {é}{{\'e}}1
+  {è}{{\`{e}}}1
+  {ê}{{\^{e}}}1
+  {û}{{\^{u}}}1
+  {ù}{{\`{u}}}1
+  {â}{{\^{a}}}1
+  {à}{{\`{a}}}1
+  {ç}{{\c{c}}}1
+  {Ç}{{\c{C}}}1
+  {ô}{{\^{o}}}1
+}
+
+
+% Entête et pied de page
+\pagestyle{fancy}
+\rhead{\includegraphics [scale=0.035]{img/ensta-logo.png}}
+\chead{}
+\lhead{}
+\lfoot{Tanguy ROUDAUT - Tadios QUINIO}
+\rfoot{FIPA promotion 2024}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\title{TP2: Statistiques descriptives bivariées}
+\author{Tanguy ROUDAUT — Tadios QUINIO \and FIPASE 24}
+\date{13 Septembre 2022}
+
+\begin{document}
+
+\maketitle
+
+\input{corps/width_lenght.tex}
+\input{corps/length_species.tex}
+\input{corps/code_complet.tex}
+
+
+\end{document}

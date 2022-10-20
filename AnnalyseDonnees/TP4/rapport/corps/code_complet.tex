@@ -1,0 +1,57 @@
+\vspace{1cm}
+\section{Code complet}
+\begin{lstlisting}[style=myPython, caption=Code Python complet TP4, frame=lines]
+import numpy as np
+from scipy import stats
+
+# question 1
+n = 100
+p0 = .2
+p = 15/n
+ic = 95
+alpha = 1 - ic / 100
+z = stats.norm.ppf(1 - alpha)
+z0 = (p - p0)/np.sqrt(p0*(1-p0)/n)
+p_valeur = stats.norm.cdf(z0)
+
+print("Question 1:")
+print(" z:", round(z, 3))
+print(" z0:", round(z0, 3))
+print(" p-valeur:", p_valeur, end="\n\n")
+
+
+# question 2
+x = np.array([39, 39, 40, 33, 36, 40, 37, 41, 39, 34, 42, 41, 42, 44, 42, 42, 
+              39, 42, 41, 40, 43, 43, 40, 39, 37])
+n = len(x)
+u0 = 37.5
+xn = np.mean(x)
+ecart_type_x = np.std(x, ddof=1)
+ic = 95
+alpha = 1 - ic / 100
+t = stats.t.ppf(1 - (alpha / 2), n - 1)
+t0 = (xn - u0)/(ecart_type_x/np.sqrt(n))
+p_valeur = 2 - 2 * stats.norm.cdf(np.abs(t0))
+
+print("Question 2:")
+print(" t:", round(t, 3))
+print(" t0:", round(t0, 3))
+print(" p-valeur:", p_valeur, end="\n\n")
+
+
+# question 3
+n = 100
+u0 = 80/100
+xn = 79.7/100
+ecart_type_x = .8/100
+ic = 95
+alpha = 1 - ic / 100
+z = stats.norm.ppf(1 - (alpha / 2))
+z0 = (xn - u0)/(ecart_type_x/np.sqrt(n))
+p_valeur = 2 - 2 * stats.norm.cdf(np.abs(z0))
+
+print("Question 3:")
+print(" z:", round(z, 3))
+print(" z0:", round(z0, 3))
+print(" p-valeur:", p_valeur)
+\end{lstlisting}

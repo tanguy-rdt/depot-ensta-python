@@ -1,0 +1,116 @@
+\vspace{1cm}
+\section{Météo}
+\vspace{.2cm}
+
+\noindent
+Les données de la variable T 16 représentent les températures maximales enregistrées en 2016 dans
+plusieurs stations météo du Portugal. \\
+$T16 = [39, 39, 40, 33, 36, 40, 37, 41, 39, 34, 42, 41, 42, 44, 42, 42, 39, 42, 41, 40, 43, 43, 40, 39, 37]$ \\
+Un rapport du centre de Météorologie portugais précise que la moyenne des températures maximales
+enregistrées au Portugal au fil des ans est de \SI{37,5}{\celsius}.
+
+\vspace{.2cm}
+
+
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~2~:} L’année 2016 est-elle exceptionnelle? Détaillez votre démarche et les hypothèses du test
+    que vous utilisez.
+\end{itemize}
+\vspace{.2cm}
+
+\begin{enumerate}
+    \item \textbf{Grandeur d'intérêt~:} Moyenne de température
+    \vspace{.1cm}
+  \item \textbf{Hypothèse nulle, H0~:} $\mu = \mu_{0} = 37,5$, soit la moyenne de température pour l'année~2016 est de \SI{37,5}{\celsius}.
+    \vspace{.1cm}
+    \item \textbf{Hypothèse alternative, H1~:} $\mu \neq \mu_{0} = 37,5$, soit la moyenne de température pour l'année~2016 est différente de \SI{37,5}{\celsius}.
+    \vspace{.1cm}
+    \item \textbf{Niveau de confiance~:} $95\%$
+    \vspace{.1cm}
+   \item \textbf{Test statistique~:}
+        Test statistique bilatéral pour la moyenne d'une distribution normale de variance inconnue~:
+
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{equation}
+                    t_{0} = \frac{\overline{Xn} - \mu_{0}}{\frac{S_{n-1}}{\sqrt{n}}}
+                    \label{eq:test_norm_var_inconnue}
+                \end{equation}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation}
+                    t_{n-1, \alpha/2} = F_{Student, n-1}^{-1}(1 - \frac{\alpha}{2})
+                    \label{eq:p-valeur_test_norm_var_inconnue}
+                \end{equation}
+            \end{minipage}
+        \end{figure}
+
+        \begin{equation}
+            \textit{p-valeur} = 2 - 2 erf(\mid t_{0} \mid) 
+            \label{eq:p-valeur_test_norm_var_inconnue}
+        \end{equation}
+
+        \vspace{.2cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 2, frame=lines]
+x = np.array([39, 39, 40, 33, 36, 40, 37, 41, 39, 34, 42, 41, 42, 44, 42, 42, 
+              39, 42, 41, 40, 43, 43, 40, 39, 37])
+n = len(x)
+u0 = 37.5
+xn = np.mean(x)
+ecart_type_x = np.std(x, ddof=1)
+ic = 95
+alpha = 1 - ic / 100
+t = stats.t.ppf(1 - (alpha / 2), n - 1)
+t0 = (xn - u0)/(ecart_type_x/np.sqrt(n))
+p_valeur = 2 - 2 * stats.norm.cdf(np.abs(t0))
+
+print("Question 2:")
+print(" t:", round(t, 3))
+print(" t0:", round(t0, 3))
+print(" p-valeur:", p_valeur, end="\n\n")
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Question 2:
+ t: 2.064
+ t0: 4.199
+ p-valeur: 2.678522342547396e-05
+\end{lstlisting}
+
+
+    \item \textbf{Rejet de H0 ?}
+        \begin{figure}[!h]
+            \centering
+            \begin{minipage}{.48\linewidth}
+                \begin{center}
+                    \begin{tabular}{| c | c |}
+                        \hline
+                        \multicolumn{2}{| c |}{\textbf{Critéres de rejet de H0}} \\
+                        pour $\alpha$ fixé & avec \textit{p-valeur} \\ \hline
+                        $t_{0} > t_{n-1, \alpha/2}$ ou $t_{0} < - t_{n-1, \alpha/2}$ & $ \textit{p-valeur} < 0.05 $\\ \hline
+                    \end{tabular}
+                \end{center}
+            \end{minipage}\hfill\vline
+            \begin{minipage}{.48\linewidth}
+                \begin{equation*}
+                    \left .
+                    \begin{aligned}
+                        t_{0} = 4.199 \\
+                        t_{n-1, \alpha/2} = 2.064\\
+                        \textit{p-valeur} = 2,6.10^{-5}
+                    \end{aligned} \qquad
+                    \right\} \qquad
+                    \begin{aligned} 
+                        t_{0} > t_{n-1, \alpha/2}\\
+                        \textit{p-valeur} < 0.01
+                    \end{aligned}
+                \end{equation*}
+            \end{minipage}
+        \end{figure}
+
+        Les résultats du test statistique sont hautement significatifs, \textit{H0} peut être rejeté puisque les deux conditions sont validées avec une $\textit{p-valeur} < 0.01$. \\
+        On peut dire avec un niveau de confiance de $95\%$ que l'année~2016 a été exceptionnelle pour la météo du Portugal.
+\end{enumerate}

@@ -1,0 +1,142 @@
+\section{Dissection d’une gaussienne}
+\vspace{.2cm}
+
+\noindent
+Données mesurées : 0.82 0.87 0.77 0.96 0.75 0.83 0.87 0.81
+
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~1~:} Considérant que l’échantillon a été engendré par une loi gaussienne, donner un intervalle
+    de confiance pour son espérance. On utilisera les fonctions tinv, mean et var ou std/t.ppf, np.mean,
+    np.std. Préciser toutes les hypothèses que vous retenez.
+\end{itemize}
+\vspace{.2cm}
+
+\noindent
+Dans cette question, l'échantillon est de longueur~$n=8$. \\
+Si un échantillon est de longueur~$n<30$ avec une $\sigma^{2}$ inconnu, il faut utiliser le cas suivant~: 
+\textit{Intervalles de confiance de la moyenne d’une distribution normale, $\sigma^{2}$ inconnue} \\
+
+\noindent
+Ce qui nous amène à utiliser les formules \ref*{eq:ic_normale_inf} et \ref*{eq:ic_normale_sup} pour déterminer l'intervalle de confiance $[I, u]$. 
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}{.48\linewidth}
+        \begin{equation}
+            I = \overline{X_{n}} - t_{n-1,\frac{\alpha}{2}} \frac{S_{n-1}}{\sqrt{n}}
+            \label{eq:ic_normale_inf}
+        \end{equation}
+    \end{minipage}\hfill\vline
+    \begin{minipage}{.48\linewidth}
+        \begin{equation}
+            u = \overline{X_{n}} + t_{n-1,\frac{\alpha}{2}} \frac{S_{n-1}}{\sqrt{n}}
+            \label{eq:ic_normale_sup}
+        \end{equation}
+    \end{minipage}
+\end{figure}
+
+\noindent
+Comme $\sigma^{2}$ est inconnue, on peut l'approcher par $S_{n-1}^{2}$ puis en déduire $S_{n-1}$. \\
+On peut également rappeler que $t_{n-1,\frac{\alpha}{2}}$ est le quantile d’ordre $\frac{\alpha}{2}$ d’une loi de Student de $n - 1$ degrés de liberté, déterminable en python avec \textit{scipy.stats.t.ppf()}.
+
+\vspace{.2cm}
+
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 1, frame=lines]
+x = np.array([0.82, 0.87, 0.77, 0.96, 0.75, 0.83, 0.87, 0.81])
+xn = np.mean(x)
+ecart_type_x = np.std(x, ddof=1)
+n = len(x)
+ic = 95
+alpha = 1 - ic / 100
+t = stats.t.ppf(1 - (alpha / 2), n - 1)
+
+I = xn - (t * ecart_type_x) / np.sqrt(n)
+u = xn + (t * ecart_type_x) / np.sqrt(n)
+
+I = round(I, 3)
+u = round(u, 3)
+
+print("Borne inférieur:", I, "\n", "Borne supérieur:", u)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Borne inférieur: 0.779 
+Borne supérieur: 0.890
+\end{lstlisting}
+
+\noindent
+On peut donc conclure qu'il y'a $95\%$ de chance que l'espérance ce trouve dans l'intervalle $[0,779; 0,890]$.
+
+\vspace{.5cm}
+
+\clearpage
+
+%%%%%
+\begin{itemize}[label={},itemindent=-2em,leftmargin=2em]
+    \item \textbf{Question~2~:} Les données sont maintenant [0.84 0.87 0.89 0.73 0.84 0.81 0.88 0.85 0.89 0.79 0.79 0.90
+    0.59 0.75 0.67 0.76 0.86 0.88 0.70 0.75 0.81 0.77 0.83 0.84 0.71 0.78 0.59 0.91 0.74 0.68 0.77 0.66
+    0.80 0.74 1.02 0.91 0.55 0.84 0.66 0.77]. Considérant que l’échantillon a été engendré par une
+    loi gaussienne, donner un intervalle de confiance pour son espérance. On utilisera les fonctions
+    (norminv, mean et var ou std ou norm.ppf, np.mean, np.std). Préciser toutes les hypothèses que
+    vous retenez. Quel est dans ce cas, l’intérêt de la loi gaussienne~?
+\end{itemize}
+\vspace{.2cm}
+
+\noindent
+Dans cette question l'échantillon est de longueur~$n=40$. \\
+Pour un échantillon de longueur~$n>30$ suivant une distribution normale centrée réduite~$\mathcal{N}(0,\,1)$ avec $\sigma^{2}$ inconnu, il faut utiliser le cas suivant~: 
+\textit{Intervalle de confiance de la moyenne d’une distribution dans le cas d’un grand échantillon} \\
+
+\noindent
+Ce qui nous amène à utiliser la formule~\ref*{eq:ic_grand1} pour déterminer l'intervalle de confiance.
+
+\begin{equation}
+    \hat{p} - z_{\frac{\alpha}{2}} \sqrt{\frac{S_{n-1}}{n}} \leq p \leq \hat{p} + z_{\frac{\alpha}{2}} \sqrt{\frac{S_{n-1}}{n}}
+    \label{eq:ic_grand1}
+\end{equation}
+
+\begin{center}
+    avec \qquad $z_{\frac{\alpha}{2}}=erf^{-1}(1 - \frac{\alpha}{2})$ \qquad et \qquad $\alpha = 1- \frac{IC\%}{100}$
+\end{center}
+
+\noindent
+Comme $\sigma^{2}$ est inconnue, on peut l'approcher par $S_{n-1}^{2}$ puis en déduire $S_{n-1}$. \\
+On peut également rappeler que $z_{\frac{\alpha}{2}}$ peut être déterminé avec la table et en python avec \textit{stats.norm.ppf()}.
+
+\vspace{.2cm}
+
+\begin{lstlisting}[style=myPython, caption=Code Python question 2, frame=lines]
+x = np.array([0.84, 0.87, 0.89, 0.73, 0.84, 0.81, 0.88, 0.85, 0.89, 0.79, 0.79, 0.90,
+              0.59, 0.75, 0.67, 0.76, 0.86, 0.88, 0.70, 0.75, 0.81, 0.77, 0.83, 0.84, 
+              0.71, 0.78, 0.59, 0.91, 0.74, 0.68, 0.77, 0.66, 0.80, 0.74, 1.02, 0.91,
+              0.55, 0.84, 0.66, 0.77])
+
+p = np.mean(x)
+ecart_type_x = np.std(x, ddof=1)
+n = len(x)
+ic = 95
+alpha = 1 - ic / 100
+z = stats.norm.ppf(1 - (alpha / 2), loc=0, scale=1)
+
+borne_inf = p - z * (ecart_type_x/np.sqrt(n))
+borne_supp = p + z * (ecart_type_x/np.sqrt(n))
+
+borne_inf = round(borne_inf, 3)
+borne_supp = round(borne_supp, 3)
+
+print("Borne inférieur:", borne_inf, "\n", "Borne supérieur:", borne_supp)
+\end{lstlisting}
+
+\begin{lstlisting}[style=myLog, caption=Résultat du code, frame=lines]
+Borne inférieur: 0.755 
+Borne supérieur: 0.816
+\end{lstlisting}
+
+
+\noindent
+On peut donc conclure qu'il y'a $95\%$ de chance que l'espérance ce trouve dans l'intervalle $[0,755; 0,816]$
+
+\vspace{.5cm}
+
